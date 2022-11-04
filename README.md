@@ -1,1 +1,0 @@
-# Cross-Cultural-Jam
