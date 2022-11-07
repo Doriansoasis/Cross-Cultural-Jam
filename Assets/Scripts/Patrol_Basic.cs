@@ -8,21 +8,22 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Patrol_Basic: MonoBehaviour
 {
+    //variables linked to movement
     public Transform[] waypoints;
-    public float speed = 1;
     private int index = 0;
-    private bool rotating = false;
+    private bool canPatrol = true;
     public bool loop = true;
     private float distanceFromPoint;
-    private bool canPatrol = true;
-
+    public float speed = 1;
+    
+    //variables linked to rotation
+    private bool rotating = false;
     private Vector3 vecToWaypoint;
-
-    private float angleToPoint = 0;
+    private float angleToPoint;
+    
     void Start()
     {
         transform.LookAt(waypoints[0].position);
-        
     }
 
     // Update is called once per frame
@@ -30,12 +31,15 @@ public class Patrol_Basic: MonoBehaviour
     {
         if (rotating)
             Rotate();
+        
         else
         {
             distanceFromPoint = Vector3.Distance(waypoints[index].position,transform.position);
+            Debug.Log(distanceFromPoint);
             if (distanceFromPoint <= 0.5)
             {
                 index++;
+                
                 if (index >= waypoints.Length)
                 {
                     index = 0;
@@ -44,7 +48,7 @@ public class Patrol_Basic: MonoBehaviour
                 }
 
                 vecToWaypoint = waypoints[index].position - transform.position;
-                angleToPoint = Vector3.SignedAngle(vecToWaypoint, transform.forward, Vector3.up);
+                angleToPoint = Vector3.SignedAngle(transform.forward, vecToWaypoint, Vector3.up);
                 rotating = true;
             }
             else Patrol();
@@ -53,9 +57,8 @@ public class Patrol_Basic: MonoBehaviour
 
     void Rotate()
     {
-        
-        transform.Rotate(Vector3.up, -angleToPoint/30);
-        if (Mathf.Abs(Vector3.Angle(vecToWaypoint, transform.forward)) <= 5.0)
+        transform.Rotate(Vector3.up, angleToPoint/30);
+        if (Vector3.Angle(vecToWaypoint, transform.forward) <= 5.0)
         {
             transform.LookAt(waypoints[index].position);
             rotating = false;
@@ -65,6 +68,6 @@ public class Patrol_Basic: MonoBehaviour
     void Patrol()
     {
         if (canPatrol)
-            transform.Translate(Vector3.forward*speed);
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[index].position, speed);
     }
 }
