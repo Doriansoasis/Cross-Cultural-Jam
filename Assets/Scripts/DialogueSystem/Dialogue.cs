@@ -5,15 +5,15 @@ using TMPro;
 
 public class Dialogue : MonoBehaviour
 {
-  // Start is called before the first frame update
-
   public List<string> toSay;
 
   public float velocityOfDisplay;
 
   public float timeBetweenSentences;
 
-  public string displayText;
+  public bool hideAtEnd;
+
+  private string displayText;
 
   private float actualTime;
 
@@ -25,13 +25,18 @@ public class Dialogue : MonoBehaviour
 
   void Start()
   {
-    
+
   }
 
   // Update is called once per frame
   void Update()
   {
-    
+
+  }
+
+  public string getDisplayText()
+  {
+    return displayText;
   }
 
   public void Reset()
@@ -61,18 +66,26 @@ public class Dialogue : MonoBehaviour
     }
 
     if (
-      actualSentence < toSay.Count-1 &&
       actualLetter == toSay[actualSentence].Length &&
       actualTime > timeBetweenSentences
       )
     {
-      actualTime -= timeBetweenSentences;
+      if (actualSentence < toSay.Count - 1)
+      {
+        actualTime -= timeBetweenSentences;
 
-      ++actualSentence;
+        ++actualSentence;
 
-      actualLetter = 0;
+        actualLetter = 0;
 
-      displayText = "";
+        displayText = "";
+
+      }
+      else if (hideAtEnd)
+      {
+        displayText = "";
+      }
+
     }
   }
 }

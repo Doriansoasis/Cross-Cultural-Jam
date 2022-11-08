@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum EventForTriggering { 
+public enum EventForTriggering
+{
   OnStart,
   IsNear,
   GoesAway
@@ -26,7 +27,7 @@ public class DialogueManager : MonoBehaviour
   void Start()
   {
     displayText.text = "";
-    ChooseDialogue(EventForTriggering.OnStart) ;
+    ChooseDialogue(EventForTriggering.OnStart);
   }
 
   // Update is called once per frame
@@ -34,9 +35,9 @@ public class DialogueManager : MonoBehaviour
   {
     //actualDialogue.
     actualDialogue?.Tick();
-    if(actualDialogue != null)
+    if (actualDialogue != null)
     {
-      displayText.text = actualDialogue.displayText;
+      displayText.text = actualDialogue.getDisplayText();
     }
   }
 
@@ -60,5 +61,6 @@ public class DialogueManager : MonoBehaviour
     {
       actualDialogue?.Reset();
     }
+
   }
 }
