@@ -22,7 +22,17 @@ public class GetAwayDialogue : MonoBehaviour
   {
     if (col.gameObject.name == "Player")
     {
-      dialogues.ChooseDialogue(EventForTriggering.GoesAway);
+      if (
+        dialogues.GetActualDialogue().forClear == EventForClear.GoesAway &&
+        dialogues.GetActualDialogue().dialogue.HasFinished()
+        )
+      {
+        dialogues.ChooseDialogue(EventForTriggering.None);
+      }
+      else
+      {
+        dialogues.ChooseDialogue(EventForTriggering.GoesAway);
+      }
     }
   }
 }

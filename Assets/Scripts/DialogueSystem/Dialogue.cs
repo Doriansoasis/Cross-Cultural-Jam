@@ -81,11 +81,16 @@ public class Dialogue : MonoBehaviour
         displayText = "";
 
       }
-      else if (hideAtEnd)
-      {
-        displayText = "";
-      }
-
     }
   }
+
+  public bool HasFinished()
+  {
+    return actualSentence == toSay.Count - 1 && actualSentence == toSay.Count - 1;
+  }
+  public bool WaitingForClear()
+  {
+    return HasFinished() && actualTime > timeBetweenSentences;
+  }
 }
+

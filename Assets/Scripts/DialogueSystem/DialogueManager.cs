@@ -5,14 +5,31 @@ using TMPro;
 
 public enum EventForTriggering
 {
+  None,
   OnStart,
   IsNear,
   GoesAway
 };
+
+public enum EventForClear
+{
+  Override,
+  Time,
+  GoesAway
+};
+
+public enum State
+{
+  QuestNotCompleted,
+  QuestCompleted
+};
+
 [System.Serializable]
 public class EventDialogue
 {
   public EventForTriggering forTrigger;
+  public State state;
+  public EventForClear forClear;
   public Dialogue dialogue;
 };
 
@@ -22,44 +39,70 @@ public class DialogueManager : MonoBehaviour
 
   public TMP_Text displayText;
 
-  Dialogue actualDialogue;
+  EventDialogue actualDialogue;
+
+  State actualState;
+
+  public EventDialogue GetActualDialogue()
+  {
+    return actualDialogue;
+  }
+
   // Start is called before the first frame update
   void Start()
   {
     displayText.text = "";
-    ChooseDialogue(EventForTriggering.OnStart);
+    SetState(State.QuestNotCompleted);
   }
 
   // Update is called once per frame
   void Update()
   {
-    //actualDialogue.
-    actualDialogue?.Tick();
+    actualDialogue?.dialogue.Tick();
     if (actualDialogue != null)
     {
-      displayText.text = actualDialogue.getDisplayText();
+      displayText.text = actualDialogue.dialogue.getDisplayText();
+      if (actualDialogue.forClear == EventForClear.Time && actualDialogue.dialogue.WaitingForClear())
+      {
+        ChooseDialogue(EventForTriggering.None);
+      }
     }
+
+  }
+
+  public void SetState(State state)
+  {
+    actualState = state;
+    ChooseDialogue(EventForTriggering.OnStart);
   }
 
   public void ChooseDialogue(EventForTriggering eventForTriggering)
   {
+    if (eventForTriggering == EventForTriggering.None)
+    {
+      actualDialogue = null;
+      displayText.text = "";
+      return;
+    }
     bool reset = true;
+    bool found = false;
     foreach (EventDialogue i in dialogues)
     {
-      if (i.forTrigger == eventForTriggering)
+      if (i.state == actualState && i.forTrigger == eventForTriggering)
       {
-        if (actualDialogue == i.dialogue)
+        if (actualDialogue?.dialogue == i.dialogue)
         {
           reset = false;
         }
-        actualDialogue = i.dialogue;
+        actualDialogue = i;
+        found = true;
+        break;
       }
 
     }
-    //actualDialogue = dialogues[EventForTriggering.OnStart];
-    if (reset)
+    if (reset && found)
     {
-      actualDialogue?.Reset();
+      actualDialogue?.dialogue.Reset();
     }
 
   }
