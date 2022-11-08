@@ -40,17 +40,25 @@ public class DialogueManager : MonoBehaviour
     }
   }
 
-  void ChooseDialogue(EventForTriggering eventForTriggering)
+  public void ChooseDialogue(EventForTriggering eventForTriggering)
   {
-    foreach(EventDialogue i in dialogues)
+    bool reset = true;
+    foreach (EventDialogue i in dialogues)
     {
-      if(i.forTrigger == eventForTriggering)
+      if (i.forTrigger == eventForTriggering)
       {
+        if (actualDialogue == i.dialogue)
+        {
+          reset = false;
+        }
         actualDialogue = i.dialogue;
       }
 
     }
     //actualDialogue = dialogues[EventForTriggering.OnStart];
-    actualDialogue?.Reset();
+    if (reset)
+    {
+      actualDialogue?.Reset();
+    }
   }
 }
