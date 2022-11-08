@@ -35,7 +35,6 @@ public class Patrol_Basic: MonoBehaviour
         else
         {
             distanceFromPoint = Vector3.Distance(waypoints[index].position,transform.position);
-            Debug.Log(distanceFromPoint);
             if (distanceFromPoint <= 0.5)
             {
                 index++;
