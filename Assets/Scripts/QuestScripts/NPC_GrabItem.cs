@@ -91,9 +91,12 @@ public class NPC_GrabItem : MonoBehaviour
         {
             if (itemFindID != -1)
             {
-                keyitems[itemFindID].Grab(HandPosition);
-                isHoldingItem = true;
-                pickedObject = keyitems[itemFindID];
+                if (Vector3.Distance(transform.position, keyitems[itemFindID].transform.position) <= 2)
+                {
+                    keyitems[itemFindID].Grab(HandPosition);
+                    isHoldingItem = true;
+                    pickedObject = keyitems[itemFindID];
+                }
                 destinationP = originP;
                 SetRotation();
                 itemFindID = -1;

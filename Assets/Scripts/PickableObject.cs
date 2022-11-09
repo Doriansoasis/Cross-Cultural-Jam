@@ -6,7 +6,6 @@ public class PickableObject : MonoBehaviour
 {
     private Rigidbody objectBody;
     private Transform mouthPosition;
-
     [HideInInspector]
     public bool isHeld = false;
     // Start is called before the first frame update
