@@ -21,6 +21,8 @@ public class HomelessBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (dog == null)
+            return;
         if (Vector3.Distance(dog.position, transform.position) <= HangoutMaxDistance)
         {
             timer += Time.deltaTime;
