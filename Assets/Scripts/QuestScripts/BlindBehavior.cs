@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class BlindBehavior : MonoBehaviour
 {
-    public Vector3 HousePosition;
+    public Transform HousePosition;
     public GameObject dog;
     public float hearingDistance;
     private PauseMenu pausemenu;
@@ -24,16 +24,18 @@ public class BlindBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (dog == null || HousePosition == null)
+            return;
         if (isRotating)
             Rotate();
         
         else if (hasDestination)
             GoToDestination();
 
-        if (!foundHouse && Vector3.Distance(HousePosition, transform.position) < HouseAcceptanceRadius)
+        if (!foundHouse && Vector3.Distance(HousePosition.position, transform.position) < HouseAcceptanceRadius)
         {
             foundHouse = true;
-            destination = HousePosition;
+            destination = HousePosition.position;
             SetRotation();
             pausemenu.FinishQuest(3);
         }

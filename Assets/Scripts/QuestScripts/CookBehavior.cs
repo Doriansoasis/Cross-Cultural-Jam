@@ -8,10 +8,11 @@ public class CookBehavior : MonoBehaviour
     private NPC_GrabItem npcItemHandler;
 
     private bool hasSpice = false;
-    public Vector3 SpiceBottle;
+    public Transform SpiceBottle;
     public float SpiceDistanceAcceptability = 10f;
     
     private int nbIngredients = 0;
+    public int ingredientsMax = 4;
     private bool questOver = false;
     void Start()
     {
@@ -32,13 +33,13 @@ public class CookBehavior : MonoBehaviour
             nbIngredients++;
         }
 
-        if (Vector3.Distance(transform.position, SpiceBottle) < SpiceDistanceAcceptability && !hasSpice)
+        if (SpiceBottle != null && Vector3.Distance(transform.position, SpiceBottle.position) < SpiceDistanceAcceptability && !hasSpice)
         {
             nbIngredients++;
             hasSpice = true;
         }
 
-        if (nbIngredients == 4 && !questOver)
+        if (nbIngredients == ingredientsMax && !questOver)
         {
             pausemenu.FinishQuest(4);
             questOver = true;
