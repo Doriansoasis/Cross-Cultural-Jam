@@ -5,24 +5,35 @@ using UnityEngine;
 public class NPC_GrabItem : MonoBehaviour
 {
     //variables linked to holdable items
-    public GameObject[] keyitems;
+    public PickableObject[] keyitems;
+    [HideInInspector]
+    public PickableObject pickedObject;
     public float GuardDistance;
     public Transform HandPosition;
     private int itemFindID = -1;
+    [HideInInspector]
+    public bool isHoldingItem = false;
 
     //variables linked to movement
-    private Transform origin;
+    [HideInInspector]
+    public Vector3 originP;
     public float speed = 3.0f;
-    private Transform destination = null;
+    private Vector3 destinationP;
+    private bool hasDestination = false;
 
     //variables linked to rotation
+    [HideInInspector]
+    public Quaternion originR;
     private bool isRotating = false;
     private Vector3 vecToDestination;
     private float angleToDestination;
-    
     void Start()
     {
-        origin = transform;
+        originP = transform.position;
+        originR = transform.rotation;
+
+        //place_holder
+        HandPosition = transform;
     }
     
     // Update is called once per frame
@@ -31,29 +42,31 @@ public class NPC_GrabItem : MonoBehaviour
         if (isRotating)
             Rotate();
         
-        else if (destination != null)
+        else if (hasDestination)
             GoToDestination();
-            
+
         if (itemFindID == -1)
         {
             for (int i = 0; i < keyitems.Length; i++)
             {
-                if (Vector3.Distance(origin.position, keyitems[i].transform.position) <= GuardDistance)
+                if (Vector3.Distance(originP, keyitems[i].transform.position) <= GuardDistance)
                 {
-                    if (!keyitems[i].GetComponent<PickableObject>().isHeld)
+                    if (!keyitems[i].isHeld && !isHoldingItem)
                     {
-                        destination = keyitems[i].transform;
+                        destinationP = keyitems[i].transform.position;
+                        hasDestination = true;
                         SetRotation();
                         itemFindID = i;
+                        i = keyitems.Length;
                     }
                 }
             }
         }
         if (itemFindID != -1)
         {
-            if (keyitems[itemFindID].GetComponent<PickableObject>().isHeld)
+            if (keyitems[itemFindID].isHeld)
             {
-                destination = origin;
+                destinationP = originP;
                 SetRotation();
                 itemFindID = -1;
             }
@@ -65,28 +78,31 @@ public class NPC_GrabItem : MonoBehaviour
         transform.Rotate(Vector3.up, angleToDestination/30);
         if (Vector3.Angle(vecToDestination, transform.forward) <= 5.0)
         {
-            transform.LookAt(destination.transform.position);
+            transform.LookAt(destinationP);
             isRotating = false;
         }
     }
 
     void GoToDestination()
     {
-        transform.position = Vector3.MoveTowards(transform.position, destination.position, speed);
+        transform.position = Vector3.MoveTowards(transform.position, destinationP, speed);
         
-        if (Vector3.Distance(transform.position, destination.position) <= 1.0f)
+        if (Vector3.Distance(transform.position, destinationP) <= 1.0f)
         {
             if (itemFindID != -1)
             {
-                keyitems[itemFindID].GetComponent<PickableObject>().Grab(HandPosition);
-                destination = origin;
+                keyitems[itemFindID].Grab(HandPosition);
+                isHoldingItem = true;
+                pickedObject = keyitems[itemFindID];
+                destinationP = originP;
                 SetRotation();
+                itemFindID = -1;
             }
             else
             {
-                transform.position = destination.position;
-                destination = null;
-                angleToDestination = Vector3.SignedAngle(transform.forward, origin.forward, Vector3.up);
+                transform.position = destinationP;
+                hasDestination = false;
+                angleToDestination = Vector3.SignedAngle(transform.forward, originR.eulerAngles, Vector3.up);
                 isRotating = true;
             }
         }
@@ -94,7 +110,7 @@ public class NPC_GrabItem : MonoBehaviour
 
     void SetRotation()
     {
-        vecToDestination = destination.position - transform.position;
+        vecToDestination = destinationP - transform.position;
         angleToDestination = Vector3.SignedAngle(transform.forward, vecToDestination, Vector3.up);
         isRotating = true;
     }

@@ -9,6 +9,8 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject[] questCheck = {null, null, null, null, null, null};
     private bool[] questDone = { false, false, false, false, false, false };
+    [HideInInspector]
+    public bool allQuestsDone = false;
     public GameObject finalQuestUI;
     public GameObject PauseUI;
     public static bool isPaused = false;
@@ -63,8 +65,8 @@ public class PauseMenu : MonoBehaviour
             if (questDone[i] == false)
                 return;
         }
-
         finalQuestUI.SetActive(true);
+        allQuestsDone = true;
     }
 
     public void Resume()
