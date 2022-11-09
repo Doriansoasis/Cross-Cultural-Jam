@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class PickableObject : MonoBehaviour
 {
-    public int questID = 0;
     private Rigidbody objectBody;
-    public Transform mouthPosition;
-
+    private Transform mouthPosition;
     [HideInInspector]
     public bool isHeld = false;
     // Start is called before the first frame update
@@ -28,6 +26,8 @@ public class PickableObject : MonoBehaviour
 
     public void Grab(Transform objectGrabPoint)
     {
+        if (isHeld)
+            return;
         this.mouthPosition = objectGrabPoint;
         objectBody.useGravity = false;
         isHeld = true;
