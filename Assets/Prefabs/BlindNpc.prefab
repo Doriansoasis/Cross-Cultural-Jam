@@ -113,5 +113,5 @@ MonoBehaviour:
   HousePosition: {fileID: 0}
   dog: {fileID: 0}
   hearingDistance: 10
-  speed: 2
-  HouseAcceptanceRadius: 10
+  speed: 0.01
+  HouseAcceptanceRadius: 5

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2809305149921862781}
   - component: {fileID: 2809305149921862778}
   - component: {fileID: 2809305149921862782}
+  - component: {fileID: 3114659107935526706}
   m_Layer: 0
   m_Name: CookNpc
   m_TagString: Untagged
@@ -111,5 +112,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpiceBottle: {fileID: 0}
-  SpiceDistanceAcceptability: 10
+  SpiceDistanceAcceptability: 1
   ingredientsMax: 4
+--- !u!114 &3114659107935526706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2809305149921862779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b452d8453ecb77342b617562ee271230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyitems:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pickedObject: {fileID: 0}
+  GuardDistance: 0
+  HandPosition: {fileID: 0}
+  isHoldingItem: 0
+  originP: {x: 0, y: 0, z: 0}
+  speed: 3
+  originR: {x: 0, y: 0, z: 0, w: 0}

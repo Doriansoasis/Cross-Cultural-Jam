@@ -10,6 +10,7 @@ public class Ice : MonoBehaviour
     private float timer;
     private PickableObject objectRef;
     public NPC_GrabItem workerRef;
+    public PlayerController dog;
     void Start()
     {
         origin = transform.position;
@@ -19,8 +20,10 @@ public class Ice : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!startedMelting && objectRef.isHeld && !workerRef.isHoldingItem)
-            startedMelting = true;
+        Debug.Log(timer);
+        if(dog.isHoldingItem)
+            if (!startedMelting && dog.heldObject == objectRef.gameObject && !workerRef.isHoldingItem)
+                startedMelting = true;
         
         else if (workerRef.isHoldingItem)
             startedMelting = false;
@@ -32,7 +35,10 @@ public class Ice : MonoBehaviour
 
         if (timer >= meltTimer)
         {
+            dog.RemoveObject(0);
             transform.position = origin;
+            startedMelting = false;
+            timer = 0;
         }
     }
 }

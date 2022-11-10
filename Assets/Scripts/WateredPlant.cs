@@ -7,6 +7,7 @@ public class WateredPlant : MonoBehaviour
     [HideInInspector]
     public bool isWatered = false;
     public Transform wateringCan;
+    public float wateredDistance = 1;
     void Start()
     {
         
@@ -15,8 +16,9 @@ public class WateredPlant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isWatered && Vector3.Distance(transform.position, wateringCan.position) < 1)
+        if (!isWatered && Vector3.Distance(transform.position, wateringCan.position) < wateredDistance)
         {
+            Debug.Log("Watered");
             isWatered = true;
         }
     }

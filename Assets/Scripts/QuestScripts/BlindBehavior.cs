@@ -5,15 +5,21 @@ using UnityEngine.UIElements;
 
 public class BlindBehavior : MonoBehaviour
 {
-    public Transform HousePosition;
-    public GameObject dog;
-    public float hearingDistance;
-    private PauseMenu pausemenu;
-    private Vector3 destination;
-    private bool hasDestination;
-    public float speed = 2;
     private bool foundHouse;
     public float HouseAcceptanceRadius = 20f;
+    public Transform HousePosition;
+    
+    public PlayerController dog;
+    public float hearingDistance;
+    private bool noticedBarking = false;
+    private PauseMenu pausemenu;
+    
+    private Vector3 destination;
+    private Vector3 vecToDestination;
+    private bool hasDestination = false;
+    
+    public float speed = 2;
+    
     private bool isRotating = false;
     private float angleToDestination;
     void Start()
@@ -24,12 +30,16 @@ public class BlindBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dog == null || HousePosition == null)
-            return;
-        if (isRotating)
+        if (dog.isBarking && !noticedBarking)
+            HearBark();
+
+        else if (!dog.isBarking && noticedBarking)
+            noticedBarking = false;
+        
+        if (isRotating && hasDestination)
             Rotate();
         
-        else if (hasDestination)
+        else if (hasDestination && !foundHouse)
             GoToDestination();
 
         if (!foundHouse && Vector3.Distance(HousePosition.position, transform.position) < HouseAcceptanceRadius)
@@ -44,7 +54,7 @@ public class BlindBehavior : MonoBehaviour
     void Rotate()
     {
         transform.Rotate(Vector3.up, angleToDestination/30);
-        if (Vector3.Angle(destination, transform.forward) <= 5.0)
+        if (Vector3.Angle(vecToDestination, transform.forward) <= 5.0)
         {
             transform.LookAt(destination);
             isRotating = false;
@@ -68,13 +78,16 @@ public class BlindBehavior : MonoBehaviour
             destination = dog.transform.position;
             SetRotation();
             hasDestination = true;
+            noticedBarking = true;
         }
     }
 
     void SetRotation()
     {
-        Vector3 vecToDestination = destination - transform.position;
+        vecToDestination = destination - transform.position;
         angleToDestination = Vector3.SignedAngle(transform.forward, vecToDestination, Vector3.up);
+        Debug.Log(angleToDestination);
+        Debug.Log(vecToDestination);
         isRotating = true;
     }
 }

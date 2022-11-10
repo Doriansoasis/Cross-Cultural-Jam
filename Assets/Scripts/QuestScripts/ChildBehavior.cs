@@ -20,7 +20,7 @@ public class ChildBehavior : MonoBehaviour
     {
         if (npcItemHandler.isHoldingItem
             && this.transform.position == npcItemHandler.originP
-            && this.transform.rotation == npcItemHandler.originR)
+            && this.transform.eulerAngles == npcItemHandler.originR)
         {
             if (npcItemHandler.pickedObject == npcItemHandler.keyitems[0])
             {

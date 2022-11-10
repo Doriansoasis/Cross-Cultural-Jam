@@ -44,9 +44,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]public Transform parabolicJumpTarget;
     [HideInInspector]public float parabolicJumpHeight;
     [HideInInspector]public float parabolicJumpSpeed;
-    [HideInInspector] public PickableObject pickedObjectRef;
-    [HideInInspector] public bool isHoldingItem = false;
+    [HideInInspector]public PickableObject pickedObjectRef;
+    [HideInInspector]public bool isHoldingItem = false;
     [HideInInspector]public bool coroutinePause;
+    [HideInInspector]public bool isBarking = false;
 
 
     float turnSmoothVelocity;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        isBarking = false;
         cc = GetComponent<CharacterController>();
 
         PlayerController[] playerControllers = GameObject.FindObjectsOfType<PlayerController>();
@@ -83,7 +85,6 @@ public class PlayerController : MonoBehaviour
             switch (animal)
             {
                 case Animal.Dog:
-                    Debug.DrawRay(mouthPosition.position, mouthPosition.forward, Color.green);
                     DogBark();
                     break;
 
@@ -238,7 +239,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator Bark()
     {
         coroutinePause = true;
-
+        isBarking = true;
+        
         dogBarkPrefab.GetComponent<SphereCollider>().radius = dogBarkSize;
         dogBarkPrefab.GetComponent<DestroySelf>().time = dogBarkDuration;
 
@@ -249,6 +251,7 @@ public class PlayerController : MonoBehaviour
         
         yield return new WaitForSeconds(dogBarkRecoveryTime);
 
+        isBarking = false;
         coroutinePause = false;
         yield return null;
     }

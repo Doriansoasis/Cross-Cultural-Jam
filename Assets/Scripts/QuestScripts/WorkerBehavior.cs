@@ -19,7 +19,6 @@ public class WorkerBehavior : MonoBehaviour
     {
         if (npcItemHandler.isHoldingItem
             && this.transform.position == npcItemHandler.originP
-            && this.transform.rotation == npcItemHandler.originR
             && !questOver)
         {
             pausemenu.FinishQuest(1);
