@@ -20,7 +20,7 @@ public class GetAwayDialogue : MonoBehaviour
 
   void OnTriggerExit(Collider col)
   {
-    if (col.gameObject.name == "Player")
+    if (col.gameObject.name == "PlayerDog")
     {
       if (
         dialogues.GetActualDialogue().forClear == EventForClear.GoesAway &&
