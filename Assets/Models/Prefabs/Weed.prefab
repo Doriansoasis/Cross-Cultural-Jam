@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6931883762277541438
+--- !u!1 &8194930530568597249
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7744272859470085252}
-  - component: {fileID: 6689803366650262305}
-  - component: {fileID: 8877162205703194603}
-  - component: {fileID: 698551396071131348}
-  - component: {fileID: 3342018467420684394}
+  - component: {fileID: 8859122847239058875}
+  - component: {fileID: 5574953724384918046}
+  - component: {fileID: 7690672164066086612}
+  - component: {fileID: 90256782439122524}
+  - component: {fileID: 7095126352996448807}
   m_Layer: 0
-  m_Name: CarrotLowPoly
+  m_Name: Weed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7744272859470085252
+--- !u!4 &8859122847239058875
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931883762277541438}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -14.75004, y: 3.3872, z: -13.041517}
-  m_LocalScale: {x: 24.076384, y: 24.076384, z: 64.245224}
+  m_GameObject: {fileID: 8194930530568597249}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: -14.285, y: 1.0053, z: -14.14182}
+  m_LocalScale: {x: -8.811469, y: -16.655325, z: -128.28}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6689803366650262305
+--- !u!33 &5574953724384918046
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931883762277541438}
-  m_Mesh: {fileID: -5495902117074765545, guid: c841ef3fb79c04840953dee1916c1ed2, type: 3}
---- !u!23 &8877162205703194603
+  m_GameObject: {fileID: 8194930530568597249}
+  m_Mesh: {fileID: -8449920009663105441, guid: c9f47d477bb8c3b4cae04e72de90fb2a, type: 3}
+--- !u!23 &7690672164066086612
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931883762277541438}
+  m_GameObject: {fileID: 8194930530568597249}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,8 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3977281815209130585, guid: c841ef3fb79c04840953dee1916c1ed2, type: 3}
-  - {fileID: 1812647522408553600, guid: c841ef3fb79c04840953dee1916c1ed2, type: 3}
+  - {fileID: 1940206460912545165, guid: c9f47d477bb8c3b4cae04e72de90fb2a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,26 +85,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &698551396071131348
+--- !u!114 &90256782439122524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931883762277541438}
+  m_GameObject: {fileID: 8194930530568597249}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3321d29c89c3d7f4aa5f555e1a47ad99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isHeld: 0
---- !u!54 &3342018467420684394
+--- !u!54 &7095126352996448807
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6931883762277541438}
+  m_GameObject: {fileID: 8194930530568597249}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
