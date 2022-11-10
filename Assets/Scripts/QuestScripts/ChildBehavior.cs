@@ -8,6 +8,10 @@ public class ChildBehavior : MonoBehaviour
 {
     private PauseMenu pausemenu;
     private NPC_GrabItem npcItemHandler;
+    public Vector3 ThrowDirection1;
+    public Vector3 ThrowDirection2;
+    public Vector3 ThrowDirection3;
+    public Vector3 ThrowDirection4;
 
     private int nbStickThrown = 0;
     void Start()
@@ -20,27 +24,38 @@ public class ChildBehavior : MonoBehaviour
     {
         if (npcItemHandler.isHoldingItem
             && this.transform.position == npcItemHandler.originP
-            && this.transform.eulerAngles == npcItemHandler.originR)
+            && npcItemHandler.canGrab)
         {
             if (npcItemHandler.pickedObject == npcItemHandler.keyitems[0])
             {
-                npcItemHandler.pickedObject.Drop();
                 npcItemHandler.isHoldingItem = false;
+                ThrowItem();
                 nbStickThrown++;
-                ThrowItem(true);
             }
             else
             {
-                npcItemHandler.pickedObject.Drop();
-                npcItemHandler.isHoldingItem = false;
                 pausemenu.FinishQuest(0);
-                ThrowItem(true);
             }
         }
     }
 
-    void ThrowItem(bool isStick)
+    void ThrowItem()
     {
-        
+        //Debug.Log("Throw");
+        switch (nbStickThrown)
+        {
+            case 0:
+                npcItemHandler.ThrowObject(2,ThrowDirection1);
+                break;
+            case 1:
+                npcItemHandler.ThrowObject(2,ThrowDirection2);
+                break;
+            case 2:
+                npcItemHandler.ThrowObject(2,ThrowDirection3);
+                break;
+            default:
+                npcItemHandler.ThrowObject(2,ThrowDirection4);
+                break;
+        }
     }
 }
