@@ -11,7 +11,7 @@ public class PickupDrop : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             if (GrabbedObject == null)
             {
@@ -21,6 +21,7 @@ public class PickupDrop : MonoBehaviour
                 Debug.Log(hit.transform);
                 if (hit.transform.TryGetComponent(out GrabbedObject))
                 {
+                    Debug.Log("miam");
                     GrabbedObject.Grab(MouthTransform);
                 }
             }
