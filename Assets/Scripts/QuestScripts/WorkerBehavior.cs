@@ -7,6 +7,7 @@ public class WorkerBehavior : MonoBehaviour
     private PauseMenu pausemenu;
     private NPC_GrabItem npcItemHandler;
     private bool questOver = false;
+    public DialogueManager dialogues;
     void Start()
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
@@ -21,6 +22,7 @@ public class WorkerBehavior : MonoBehaviour
             && this.transform.position == npcItemHandler.originP
             && !questOver)
         {
+            dialogues.SetState(State.QuestCompleted);
             pausemenu.FinishQuest(1);
             questOver = true;
         }

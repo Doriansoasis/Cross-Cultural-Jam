@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/LVL_Intro.unity
-    guid: 9f2066bebe648374fae0852cce0da68a
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/LVL_Splash_Screen.unity
     guid: 4b2399e99f8fd884bb4a2becb403f333
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LVL_Main_Menu.unity
     guid: 28ce191765c04214183a4094bfe53b7a
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/finalScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
