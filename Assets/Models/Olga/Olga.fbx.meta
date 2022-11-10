@@ -1,17 +1,20 @@
 fileFormatVersion: 2
-guid: 27c7424c827b9f54488ae32414759f7c
+guid: 33d16da0e0a4f9743844f216c96da01a
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -6428736428040689543
-    second: metarig|Bark
+      74: 6756316543616086684
+    second: metarig|CatWalk
   - first:
-      74: -5324238279805231817
-    second: metarig|Idle
+      74: 220130065574559505
+    second: metarig|JumpingOff
   - first:
-      74: 2933577835342229695
-    second: metarig|Walk
+      74: 8182031860853748867
+    second: metarig|JumpUP
+  - first:
+      74: -8198073863128556602
+    second: metarig|OnDog
   externalObjects: {}
   materials:
     materialImportMode: 2
