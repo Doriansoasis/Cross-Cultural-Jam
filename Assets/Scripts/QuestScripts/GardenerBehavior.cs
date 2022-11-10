@@ -25,7 +25,7 @@ public class GardenerBehavior : MonoBehaviour
         
         for (int i = 0; i < weeds.Length; i++)
         {
-            if (Vector3.Distance(weeds[i].position, transform.position) >= WeedDistanceAcceptable)
+            if (Vector3.Distance(weeds[i].position, transform.position) <= WeedDistanceAcceptable)
                 return;
         }
         

@@ -13,6 +13,7 @@ public class HomelessBehavior : MonoBehaviour
     public float HangoutMaxDistance = 10;
     private bool questOver = false;
     private bool allQuestsOver = false;
+    private bool stopUpdate = false;
     void Start()
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
@@ -21,8 +22,9 @@ public class HomelessBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dog == null)
+        if (stopUpdate)
             return;
+        
         if (Vector3.Distance(dog.position, transform.position) <= HangoutMaxDistance)
         {
             timer += Time.deltaTime;
@@ -42,6 +44,8 @@ public class HomelessBehavior : MonoBehaviour
 
         if (timer >= HangoutTimeEnding && allQuestsOver)
         {
+            Debug.Log("Game Over");
+            stopUpdate = true;
             //game over
         }
     }
