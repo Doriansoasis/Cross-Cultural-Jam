@@ -11,34 +11,42 @@ public class PickableObject : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        /*
         objectBody = GetComponent<Rigidbody>();
         int layer = LayerMask.NameToLayer("PickableObject");
         gameObject.layer = layer;
+        */
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        /*
         if (mouthPosition != null)
         {
             objectBody.MovePosition(mouthPosition.position);
             transform.LookAt(mouthPosition.forward);
         }
+        */
     }
 
     public void Grab(Transform objectGrabPoint)
     {
+        /*
         if (isHeld)
             return;
         this.mouthPosition = objectGrabPoint;
         objectBody.useGravity = false;
         isHeld = true;
+        */
     }
 
     public void Drop()
     {
+        /*
         objectBody.useGravity = true;
         mouthPosition = null;
         isHeld = false;
+        */
     }
 }

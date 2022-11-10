@@ -123,11 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b452d8453ecb77342b617562ee271230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyitems: []
+  keyitems:
+  - {fileID: 0}
   pickedObject: {fileID: 0}
   GuardDistance: 10
   HandPosition: {fileID: 0}
   isHoldingItem: 0
   originP: {x: 0, y: 0, z: 0}
   speed: 3
-  originR: {x: 0, y: 0, z: 0, w: 0}
+  originR: {x: 0, y: 0, z: 0}
