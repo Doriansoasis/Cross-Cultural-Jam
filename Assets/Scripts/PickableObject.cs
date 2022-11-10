@@ -12,6 +12,8 @@ public class PickableObject : MonoBehaviour
     private void Awake()
     {
         objectBody = GetComponent<Rigidbody>();
+        int layer = LayerMask.NameToLayer("PickableObject");
+        gameObject.layer = layer;
     }
 
     // Update is called once per frame

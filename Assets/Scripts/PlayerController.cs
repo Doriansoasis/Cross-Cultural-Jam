@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem runEffect;
     public GameObject heldObject;
     public Transform mouthPosition;
+    [SerializeField] private LayerMask pickUpLayerMask;
+    public float grabDistance = 1;
+    public float releaseDistance = 1;
     
     [Header("Player Movement")]
     public float speed = 10f;
@@ -41,7 +44,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]public Transform parabolicJumpTarget;
     [HideInInspector]public float parabolicJumpHeight;
     [HideInInspector]public float parabolicJumpSpeed;
+    [HideInInspector] public PickableObject pickedObjectRef;
+    [HideInInspector] public bool isHoldingItem = false;
     [HideInInspector]public bool coroutinePause;
+
 
     float turnSmoothVelocity;
     float airSpeed;
@@ -73,9 +79,11 @@ public class PlayerController : MonoBehaviour
         if (!coroutinePause)
         {
             AirPhysics();
+            TryGrab();
             switch (animal)
             {
                 case Animal.Dog:
+                    Debug.DrawRay(mouthPosition.position, mouthPosition.forward, Color.green);
                     DogBark();
                     break;
 
@@ -133,6 +141,34 @@ public class PlayerController : MonoBehaviour
             airSpeed += fallAcceleration * Time.deltaTime;
             if (airSpeed < terminalVelocity * Time.deltaTime)
                 airSpeed = terminalVelocity * Time.deltaTime;
+        }
+    }
+
+    void TryGrab()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (isHoldingItem == false)
+            {
+                float pickUpDistance = 2f;
+                bool hashit = Physics.Raycast(mouthPosition.position, mouthPosition.forward, out RaycastHit hit, grabDistance);
+                if (hashit)
+                {
+                    if (hit.transform.TryGetComponent(out pickedObjectRef))
+                    {
+                        heldObject = hit.transform.gameObject;
+                        pickedObjectRef.isHeld = true;
+                        isHoldingItem = true;
+                        HoldObject(heldObject, new Vector3(0, 0, 0));
+                    }
+                }
+            }
+            else
+            {
+                RemoveObject(2);
+                isHoldingItem = false;
+                pickedObjectRef.isHeld = false;
+            }
         }
     }
 

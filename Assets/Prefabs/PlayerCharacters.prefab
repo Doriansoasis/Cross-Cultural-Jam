@@ -297,6 +297,10 @@ MonoBehaviour:
   runEffect: {fileID: 165784487825703667, guid: 2ad773bb99303424ea822bb9f3fc3a2a, type: 3}
   heldObject: {fileID: 0}
   mouthPosition: {fileID: 381504648}
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  grabDistance: 2
   speed: 6
   jumpHeight: 10
   fallAcceleration: -0.05
@@ -636,6 +640,10 @@ MonoBehaviour:
   runEffect: {fileID: 165784487825703667, guid: 2ad773bb99303424ea822bb9f3fc3a2a, type: 3}
   heldObject: {fileID: 0}
   mouthPosition: {fileID: 758847975}
+  pickUpLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  grabDistance: 2
   speed: 8
   jumpHeight: 10
   fallAcceleration: -0.05
