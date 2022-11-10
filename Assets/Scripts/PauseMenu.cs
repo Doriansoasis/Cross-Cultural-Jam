@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using Cursor = UnityEngine.Cursor;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject[] questCheck = {null, null, null, null, null, null};
+    public Texture2D cursorTexture;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public Vector2 hotSpot = Vector2.zero;
+    public TextMeshProUGUI[] questCheck = {null, null, null, null, null, null};
     private bool[] questDone = { false, false, false, false, false, false };
     [HideInInspector]
     public bool allQuestsDone = false;
@@ -16,13 +21,19 @@ public class PauseMenu : MonoBehaviour
     public static bool isPaused = false;
     void Start()
     {
-        for (int i = 0; i < questCheck.Length; i++)
-            questCheck[i].SetActive(false);
-
         finalQuestUI.SetActive(false);
         PauseUI.SetActive(false);
     }
 
+    void OnMouseEnter()
+    {
+        Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+    }
+
+    void OnMouseExit()
+    {
+        Cursor.SetCursor(null, Vector2.zero, cursorMode);
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -57,7 +68,7 @@ public class PauseMenu : MonoBehaviour
 
     public void FinishQuest(int index)
     {
-        questCheck[index].SetActive(true);
+        //questCheck[index].color.a = 0.3f;
         questDone[index] = true;
         
         for (int i = 0; i < questDone.Length; i++)
