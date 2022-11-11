@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -32,6 +33,9 @@ public class NPC_GrabItem : MonoBehaviour
     private bool isRotating = false;
     private Vector3 vecToDestination;
     private float angleToDestination;
+    [HideInInspector]public bool canGrab = true;
+    private float timer = 0;
+    private float grabDelay = 1;
     void Start()
     {
         originP = transform.position;
@@ -44,6 +48,23 @@ public class NPC_GrabItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isHoldingItem);
+
+        //Debug.Log(keyitems[0].transform.position);
+
+        if (!canGrab)
+        {
+            //Debug.Log("Wagabou");
+            timer += Time.deltaTime;
+            if (timer >= grabDelay)
+            {
+                canGrab = true;
+                timer = 0;
+            }
+            return;
+        }
+
+
         if (isRotating)
             Rotate();
         
@@ -92,11 +113,11 @@ public class NPC_GrabItem : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, destinationP, speed);
         
-        if (Vector3.Distance(transform.position, destinationP) <= 1.0f)
+        if (Vector3.Distance(transform.position, destinationP) <= 1.5f)
         {
             if (itemFindID != -1)
             {
-                if (Vector3.Distance(transform.position, keyitems[itemFindID].transform.position) <= 1)
+                if (Vector3.Distance(transform.position, keyitems[itemFindID].transform.position) <= 1.5)
                 {
                     HoldObject(keyitems[itemFindID].gameObject, new Vector3(0,0,0));
                 }
@@ -158,10 +179,33 @@ public class NPC_GrabItem : MonoBehaviour
                 heldObjectRigidbody.isKinematic = heldObjectIsKinematic;
 
             pickedObject.transform.SetParent(null, true);
-            pickedObject.enabled = false;
+            pickedObject.transform.position = new Vector3(-1000, -1000, -1000);
             pickedObject = null;
             isHoldingItem = false;
         }
+
+        hasDestination = false;
     }
     
+    public void ThrowObject(float distance, Vector3 force)
+    {
+        if (pickedObject.gameObject != null)
+        {
+            Collider heldObjectCollider = pickedObject.GetComponent<Collider>();
+            Rigidbody heldObjectRigidbody = pickedObject.GetComponent<Rigidbody>();
+
+            if (heldObjectCollider)
+                heldObjectCollider.enabled = true;
+            
+            heldObjectRigidbody.isKinematic = true;
+
+            pickedObject.transform.SetParent(null, true);
+            pickedObject.transform.position = transform.position + transform.up * 2;
+            heldObjectRigidbody.velocity = new Vector3(100, 15, 100);
+            heldObjectRigidbody.AddForce(new Vector3(100, 100, 100), ForceMode.Impulse);
+            pickedObject = null;
+            canGrab = false;
+        }
+    }
+
 }

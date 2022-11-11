@@ -24,11 +24,12 @@ public class CookBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(nbIngredients);
         if (npcItemHandler.isHoldingItem
             && this.transform.position == npcItemHandler.originP)
         {
-            npcItemHandler.DestroyHeldItem();
             nbIngredients++;
+            npcItemHandler.DestroyHeldItem();
         }
 
         if (SpiceBottle != null && Vector3.Distance(transform.position, SpiceBottle.position) < SpiceDistanceAcceptability && !hasSpice)
