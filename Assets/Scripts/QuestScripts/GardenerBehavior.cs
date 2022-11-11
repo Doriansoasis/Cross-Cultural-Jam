@@ -9,6 +9,7 @@ public class GardenerBehavior : MonoBehaviour
     public WateredPlant[] plants;
     public Transform[] weeds;
     public float WeedDistanceAcceptable = 10f;
+    public DialogueManager dialogues;
     void Start()
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
@@ -25,10 +26,11 @@ public class GardenerBehavior : MonoBehaviour
         
         for (int i = 0; i < weeds.Length; i++)
         {
-            if (Vector3.Distance(weeds[i].position, transform.position) >= WeedDistanceAcceptable)
+            //Debug.Log(Vector3.Distance(weeds[i].position, transform.position));
+            if (Vector3.Distance(weeds[i].position, transform.position) < WeedDistanceAcceptable)
                 return;
         }
-        
+        dialogues.SetState(State.QuestCompleted);
         pausemenu.FinishQuest(5);
     }
 }

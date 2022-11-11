@@ -8,37 +8,37 @@ public class CookBehavior : MonoBehaviour
     private NPC_GrabItem npcItemHandler;
 
     private bool hasSpice = false;
-    public Vector3 SpiceBottle;
+    public Transform SpiceBottle;
     public float SpiceDistanceAcceptability = 10f;
     
     private int nbIngredients = 0;
+    public int ingredientsMax = 4;
     private bool questOver = false;
+
     void Start()
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
         npcItemHandler = this.GetComponent<NPC_GrabItem>();
-        Debug.Log((npcItemHandler.speed));
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(nbIngredients);
         if (npcItemHandler.isHoldingItem
-            && this.transform.position == npcItemHandler.originP
-            && this.transform.rotation == npcItemHandler.originR)
+            && this.transform.position == npcItemHandler.originP)
         {
-            npcItemHandler.pickedObject.Drop();
-            npcItemHandler.isHoldingItem = false;
             nbIngredients++;
+            npcItemHandler.DestroyHeldItem();
         }
 
-        if (Vector3.Distance(transform.position, SpiceBottle) < SpiceDistanceAcceptability && !hasSpice)
+        if (SpiceBottle != null && Vector3.Distance(transform.position, SpiceBottle.position) < SpiceDistanceAcceptability && !hasSpice)
         {
             nbIngredients++;
             hasSpice = true;
         }
 
-        if (nbIngredients == 4 && !questOver)
+        if (nbIngredients == ingredientsMax && !questOver)
         {
             pausemenu.FinishQuest(4);
             questOver = true;
