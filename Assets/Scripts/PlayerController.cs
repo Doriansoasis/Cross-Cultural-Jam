@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
             if (isHoldingItem == false)
             {
                 float pickUpDistance = 2f;
-                bool hashit = Physics.Raycast(mouthPosition.position, mouthPosition.forward, out RaycastHit hit, grabDistance);
+                bool hashit = Physics.Raycast(mouthPosition.position, -mouthPosition.up, out RaycastHit hit, grabDistance);
                 if (hashit)
                 {
                     if (hit.transform.TryGetComponent(out pickedObjectRef))

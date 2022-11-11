@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7690672164066086612}
   - component: {fileID: 90256782439122524}
   - component: {fileID: 7095126352996448807}
+  - component: {fileID: 3656947424093664862}
   m_Layer: 0
   m_Name: Weed
   m_TagString: Untagged
@@ -114,3 +115,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &3656947424093664862
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8194930530568597249}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.13463897, y: 0.04283251, z: 0.019628441}
+  m_Center: {x: 0.017082091, y: 0, z: -0.00018577646}
