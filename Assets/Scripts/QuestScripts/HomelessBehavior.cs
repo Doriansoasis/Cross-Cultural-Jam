@@ -46,7 +46,8 @@ public class HomelessBehavior : MonoBehaviour
         {
             Debug.Log("Game Over");
             stopUpdate = true;
-            //game over
+            
+            pausemenu.EndGame();
         }
     }
 }

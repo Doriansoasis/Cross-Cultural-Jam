@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Cursor = UnityEngine.Cursor;
+using Image = UnityEngine.UI.Image;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -16,9 +19,17 @@ public class PauseMenu : MonoBehaviour
     private bool[] questDone = { false, false, false, false, false, false };
     [HideInInspector]
     public bool allQuestsDone = false;
+
+    public Image image1; 
+    public Image image2;
+    public Color color1 = new Color(0, 0, 0, 0);
+    public Color color2 = new Color(0, 0, 0, 0);
     public GameObject finalQuestUI;
     public GameObject PauseUI;
     public static bool isPaused = false;
+    public GameObject endPanel;
+
+    private bool isFinished;
     void Start()
     {
         finalQuestUI.SetActive(false);
@@ -68,7 +79,7 @@ public class PauseMenu : MonoBehaviour
 
     public void FinishQuest(int index)
     {
-        //questCheck[index].color.a = 0.3f;
+        questCheck[index].gameObject.SetActive(false);
         questDone[index] = true;
         
         for (int i = 0; i < questDone.Length; i++)
@@ -92,6 +103,11 @@ public class PauseMenu : MonoBehaviour
         PauseUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+    }
+
+    public void EndGame()
+    {
+        SceneManager.LoadScene("Ending");
     }
 
     public void ReturnToMenu()
