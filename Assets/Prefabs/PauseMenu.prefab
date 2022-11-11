@@ -1539,8 +1539,13 @@ MonoBehaviour:
   - {fileID: 272477005854589297}
   - {fileID: 272477006940046380}
   allQuestsDone: 0
+  image1: {fileID: 0}
+  image2: {fileID: 0}
+  color1: {r: 0, g: 0, b: 0, a: 0}
+  color2: {r: 0, g: 0, b: 0, a: 0}
   finalQuestUI: {fileID: 272477005911329098}
   PauseUI: {fileID: 272477005842852353}
+  endPanel: {fileID: 0}
 --- !u!1 &272477006657785553
 GameObject:
   m_ObjectHideFlags: 0
