@@ -23,6 +23,7 @@ public class PauseMenu : MonoBehaviour
     {
         finalQuestUI.SetActive(false);
         PauseUI.SetActive(false);
+        FinishQuest(0);
     }
 
     void OnMouseEnter()

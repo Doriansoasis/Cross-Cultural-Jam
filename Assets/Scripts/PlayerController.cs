@@ -10,15 +10,18 @@ public class PlayerController : MonoBehaviour
         Dog, Cat
     }
 
+    public enum AnimationState
+    {
+        Idle, Walk, Air, Leap, Bark, Rest, HopOff
+    }
+
     public Animal animal;
 
     public Transform cam;
+    public Animator animator;
     public ParticleSystem runEffect;
     public GameObject heldObject;
     public Transform mouthPosition;
-    [SerializeField] private LayerMask pickUpLayerMask;
-    public float grabDistance = 1;
-    public float releaseDistance = 1;
     
     [Header("Player Movement")]
     public float speed = 10f;
@@ -30,7 +33,6 @@ public class PlayerController : MonoBehaviour
     [Space(5)]
     [Header("Dog Stuff")]
     public DogBark dogBarkPrefab;
-    public AudioSource audioSource;
     public float dogBarkWindUpTime = 0.33f;
     public float dogBarkRecoveryTime = 0.7f;
     public float dogBarkSize = 5;
@@ -45,11 +47,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]public Transform parabolicJumpTarget;
     [HideInInspector]public float parabolicJumpHeight;
     [HideInInspector]public float parabolicJumpSpeed;
-    [HideInInspector]public PickableObject pickedObjectRef;
-    [HideInInspector]public bool isHoldingItem = false;
     [HideInInspector]public bool coroutinePause;
     [HideInInspector]public bool isBarking = false;
-
+    [HideInInspector] public bool isHoldingItem = false;
+    public PickableObject pickedObjectRef;
 
     float turnSmoothVelocity;
     float airSpeed;
@@ -59,10 +60,11 @@ public class PlayerController : MonoBehaviour
     bool heldObjectIsKinematic;
 
     PlayerController partner;
+    [HideInInspector]public AnimationState currentAnimation = AnimationState.Idle;
+    AnimationState previousAnimation;
 
     private void Awake()
     {
-        isBarking = false;
         cc = GetComponent<CharacterController>();
 
         PlayerController[] playerControllers = GameObject.FindObjectsOfType<PlayerController>();
@@ -79,70 +81,64 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!coroutinePause)
+        AirPhysics();
+        TryGrab();
+        switch (animal)
         {
-            AirPhysics();
-            TryGrab();
-            switch (animal)
+            case Animal.Dog:
+                DogBark();
+                break;
+
+            case Animal.Cat:
+                CatJump();
+                break;
+        }
+        Movement();
+
+        SwitchAnimation();
+    }
+
+    public void SwitchAnimation()
+    {
+        if (previousAnimation != currentAnimation && animator != null)
+        {
+            //NOTE: AnimationState.Idle is default
+            animator.SetBool("Walk", false);
+            animator.SetBool("Airborne", false);
+            animator.SetBool("Leap", false);
+            animator.SetBool("Rest", false);
+            animator.SetBool("Hop Off", false);
+            animator.ResetTrigger("Bark");
+
+            switch (currentAnimation)
             {
-                case Animal.Dog:
-                    DogBark();
+                case AnimationState.Walk:
+                    animator.SetBool("Walk", true);
                     break;
 
-                case Animal.Cat:
-                    CatJump();
+                case AnimationState.Air:
+                    animator.SetBool("Airborne", true);
+                    break;
+
+                case AnimationState.Leap:
+                    animator.SetBool("Leap", true);
+                    break;
+
+                case AnimationState.Bark:
+                    animator.SetTrigger("Bark");
+                    currentAnimation = AnimationState.Idle;
+                    break;
+
+                case AnimationState.Rest:
+                    animator.SetBool("Rest", true);
+                    break;
+
+                case AnimationState.HopOff:
+                    animator.SetTrigger("Hop Off");
                     break;
             }
-            Movement();
-        }
-    }
 
-    private void Movement()
-    {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-
-        Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
-
-        if (moveDirection.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0, angle, 0);
-
-            Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-
-            SpawnParticle();
-            cc.Move(new Vector3(moveDir.x * speed * Time.deltaTime, airSpeed, moveDir.z * speed * Time.deltaTime));
-        }
-
-        else
-            cc.Move(new Vector3(0, airSpeed, 0));
-    }
-
-    private void SpawnParticle()
-    {
-        particleTimer += Time.deltaTime;
-        if (particleTimer > 0.1f && cc.isGrounded)
-        {
-            Instantiate(runEffect, new Vector3(transform.position.x, transform.position.y - GetComponent<Collider>().bounds.size.y/2, transform.position.z), transform.rotation);
-            particleTimer = 0;
-        }
-    }
-
-    private void AirPhysics()
-    {
-        if (cc.isGrounded)
-        {
-            airSpeed = -0.01f;
-            
-        }
-
-        else
-        {
-            airSpeed += fallAcceleration * Time.deltaTime;
-            if (airSpeed < terminalVelocity * Time.deltaTime)
-                airSpeed = terminalVelocity * Time.deltaTime;
+            previousAnimation = currentAnimation;
         }
     }
 
@@ -152,12 +148,8 @@ public class PlayerController : MonoBehaviour
         {
             if (isHoldingItem == false)
             {
-                float pickUpDistance = 2f;
-//<<<<<<< HEAD
-                bool hashit = Physics.Raycast(mouthPosition.position- mouthPosition.forward, mouthPosition.forward, out RaycastHit hit, grabDistance);
-//=======
-//                bool hashit = Physics.Raycast(mouthPosition.position, -mouthPosition.up, out RaycastHit hit, grabDistance);
-//>>>>>>> dev
+                float pickUpDistance = 0.5f;
+                bool hashit = Physics.Raycast(mouthPosition.position, mouthPosition.forward, out RaycastHit hit, pickUpDistance);
                 if (hashit)
                 {
                     if (hit.transform.TryGetComponent(out pickedObjectRef))
@@ -177,11 +169,73 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    private void Movement()
+    {
+        if (!coroutinePause)
+        {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            Vector3 moveDirection = new Vector3(horizontal, 0, vertical).normalized;
+
+            currentAnimation = AnimationState.Idle;
+
+            if (moveDirection.magnitude >= 0.1f)
+            {
+                float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0, angle, 0);
+
+                Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
+
+                SpawnParticle();
+
+                currentAnimation = AnimationState.Walk;
+                
+                cc.Move(new Vector3(moveDir.x * speed * Time.deltaTime, airSpeed, moveDir.z * speed * Time.deltaTime));
+            }
+
+            else
+            {
+                cc.Move(new Vector3(0, airSpeed, 0));
+            }
+
+            if (!cc.isGrounded)
+                currentAnimation = AnimationState.Air;
+        }
+    }
+
+    private void SpawnParticle()
+    {
+        particleTimer += Time.deltaTime;
+        if (particleTimer > 0.1f && cc.isGrounded)
+        {
+            Instantiate(runEffect, new Vector3(transform.position.x, transform.position.y - GetComponent<Collider>().bounds.size.y/2, transform.position.z), transform.rotation);
+            particleTimer = 0;
+        }
+    }
+
+    private void AirPhysics()
+    {
+        if (!coroutinePause)
+        {
+            if (cc.isGrounded)
+                airSpeed = -0.05f;
+
+            else
+            {
+                airSpeed += fallAcceleration * Time.deltaTime;
+                if (airSpeed < terminalVelocity * Time.deltaTime)
+                    airSpeed = terminalVelocity * Time.deltaTime;
+            }
+        }
+    }
 
     public void HoldObject(GameObject obj, Vector3 rotationOffset)
     {
         Collider heldObjectCollider = obj.GetComponent<Collider>() ? obj.GetComponent<Collider>() : null;
         Rigidbody heldObjectRigidbody = obj.GetComponent<Rigidbody>() ? obj.GetComponent<Rigidbody>() : null;
+        isHoldingItem = true;
 
         if (heldObjectCollider)
         {
@@ -225,31 +279,36 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump"))
         {
+            currentAnimation = AnimationState.Bark;
             StartCoroutine(Bark());
         }
     }
 
     private void CatJump()
     {
-        if (Input.GetButtonDown("Jump") && cc.isGrounded)
+        if (!coroutinePause)
         {
-            if (parabolicJumpTarget != null)
-                StartCoroutine(ParabolicCatJump());
-
-            else
-                airSpeed = jumpHeight / 600; //Time.deltaTime produced random Jump Heights. This is to keep it consistent while being close to the value Time.deltaTime would produce on average
+            if (Input.GetButtonDown("Jump") && cc.isGrounded)
+            {
+                if (parabolicJumpTarget != null)
+                {
+                    currentAnimation = AnimationState.Leap;
+                    StartCoroutine(ParabolicCatJump());
+                }
+                else
+                    airSpeed = jumpHeight / 600; //Time.deltaTime produced random Jump Heights. This is to keep it consistent while being close to the value Time.deltaTime would produce on average
+            }
         }
     }
 
     IEnumerator Bark()
     {
-    //Debug.Log("barking");
-        coroutinePause = true;
         isBarking = true;
+        coroutinePause = true;
         
         dogBarkPrefab.GetComponent<SphereCollider>().radius = dogBarkSize;
         dogBarkPrefab.GetComponent<DestroySelf>().time = dogBarkDuration;
-        dogBarkPrefab.GetComponent<DogBark>().bark = audioSource;
+
         yield return new WaitForSeconds(dogBarkWindUpTime);
 
         Instantiate(dogBarkPrefab, transform.position, transform.rotation);
@@ -259,6 +318,7 @@ public class PlayerController : MonoBehaviour
 
         isBarking = false;
         coroutinePause = false;
+      
         yield return null;
     }
 
@@ -298,7 +358,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = MathParabola.Parabola(startPos, endPos, parabolicJumpHeight, parabolaTimeline);
             parabolaTimeline += Time.deltaTime * parabolicJumpSpeed;
-            Debug.Log(parabolaTimeline);
             yield return new WaitForFixedUpdate();
         }
 

@@ -16,6 +16,12 @@ public class ChangeCharacter : MonoBehaviour
 
     public bool allowMovingThroughEachCharacter = false;
 
+    public float dogCameraZoom = 10;
+    public float catCameraZoom = 5;
+
+    [Range(0,360)]
+    public float jumpOffAngle = 90;
+    public float catHopOffWindUpTime = 3;
     public float catHopHeight = 1f;
     public float catHopSpeed = 1.5f;
     public float hopOnDistance = 5;
@@ -58,6 +64,8 @@ public class ChangeCharacter : MonoBehaviour
             cat.transform.position = dogBack.position;
             cat.transform.parent = dogBack;
             cat.transform.rotation = dog.transform.rotation;
+            cat.enabled = false;
+            cat.animator.SetBool("Rest", true);
         }
 
         else
@@ -75,6 +83,13 @@ public class ChangeCharacter : MonoBehaviour
     void PartnerControl()
     {
         virtualCamera.m_Follow = currentAnimal == dog ? dog.transform : cat.transform;
+        CinemachineComponentBase componentBase = virtualCamera.GetCinemachineComponent(CinemachineCore.Stage.Body);
+
+        if (componentBase is CinemachineFramingTransposer)
+        {
+            (componentBase as CinemachineFramingTransposer).m_CameraDistance = currentAnimal == dog ? dogCameraZoom : catCameraZoom;
+        }
+
         if (!switching)
         {
             dog.enabled = currentAnimal == dog ? true : false;
@@ -109,6 +124,9 @@ public class ChangeCharacter : MonoBehaviour
         switching = true;
         cat.transform.LookAt(new Vector3 (dogBack.position.x, cat.transform.position.y, dogBack.position.z));
 
+        cat.currentAnimation = PlayerController.AnimationState.Air;
+        cat.SwitchAnimation();
+
         Vector3 startPos = cat.transform.position;
         Vector3 endPos = dogBack.position;
         float parabolaTimeline = 0;
@@ -117,12 +135,14 @@ public class ChangeCharacter : MonoBehaviour
         {
             cat.transform.position = MathParabola.Parabola(startPos, endPos, catHopHeight, parabolaTimeline);
             parabolaTimeline += Time.deltaTime * catHopSpeed;
-            //Debug.Log(parabolaTimeline);
+            Debug.Log(parabolaTimeline);
             yield return new WaitForFixedUpdate();
         }
         cat.transform.position = dogBack.position;
         cat.transform.parent = dogBack;
         cat.transform.rotation = dog.transform.rotation;
+        cat.currentAnimation = PlayerController.AnimationState.Rest;
+        cat.SwitchAnimation();
         dog.enabled = true;
         switching = false;
         yield return null;
@@ -131,13 +151,23 @@ public class ChangeCharacter : MonoBehaviour
     IEnumerator CatHopOff()
     {
         Vector3 startPos = cat.transform.position;
-        Vector3 endPos = dog.transform.position + dog.transform.forward * hopOffDistance;
+        Vector3 newDir = Quaternion.Euler(0, jumpOffAngle, 0) * cat.transform.forward;
+        Vector3 endPos = dog.transform.position + newDir * hopOffDistance;
         endPos.y = dog.transform.position.y;
+
         float parabolaTimeline = 0;
         dog.enabled = false; 
         cat.enabled = false;
         switching = true;
+        dog.animator.SetBool("Walk", false);
         cat.transform.parent = null;
+        cat.animator.SetBool("Rest", false);
+
+        yield return new WaitForSeconds(catHopOffWindUpTime);
+
+        cat.transform.LookAt(new Vector3(endPos.x, cat.transform.position.y, endPos.z));
+
+        cat.animator.SetBool("Airborne", true);
 
         while (parabolaTimeline < 1)
         {
