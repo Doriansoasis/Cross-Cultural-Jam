@@ -117,7 +117,7 @@ public class ChangeCharacter : MonoBehaviour
         {
             cat.transform.position = MathParabola.Parabola(startPos, endPos, catHopHeight, parabolaTimeline);
             parabolaTimeline += Time.deltaTime * catHopSpeed;
-            Debug.Log(parabolaTimeline);
+            //Debug.Log(parabolaTimeline);
             yield return new WaitForFixedUpdate();
         }
         cat.transform.position = dogBack.position;

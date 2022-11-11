@@ -24,7 +24,9 @@ public class BlindBehavior : MonoBehaviour
     
     private bool isRotating = false;
     private float angleToDestination;
-    void Start()
+    public DialogueManager dialogues;
+
+  void Start()
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
     }
@@ -50,6 +52,7 @@ public class BlindBehavior : MonoBehaviour
             destination = HousePosition.position;
             SetRotation();
             pausemenu.FinishQuest(3);
+            dialogues.SetState(State.QuestCompleted);
             Instantiate(spawnedMeat, new Vector3(transform.position.x, transform.position.y, transform.position.z) + transform.forward*2, transform.rotation);
         }
     }
@@ -81,6 +84,11 @@ public class BlindBehavior : MonoBehaviour
             destination = dog.transform.position;
             SetRotation();
             hasDestination = true;
+            if(dialogues.GetState() == State.QuestNotCompleted)
+            {
+              dialogues.SetState(State.Stage1);
+            }
+            
             //noticedBarking = true;
         }
     }
