@@ -12,7 +12,7 @@ public class WorkerBehavior : MonoBehaviour
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
         npcItemHandler = this.GetComponent<NPC_GrabItem>();
-        Debug.Log((npcItemHandler.speed));
+        //Debug.Log((npcItemHandler.speed));
     }
 
     // Update is called once per frame

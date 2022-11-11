@@ -18,7 +18,7 @@ public class ChildBehavior : MonoBehaviour
     {
         pausemenu = GameObject.Find("PauseMenu").GetComponent<PauseMenu>();
         npcItemHandler = this.GetComponent<NPC_GrabItem>();
-        Debug.Log((npcItemHandler.speed));
+        //Debug.Log((npcItemHandler.speed));
     }
     void Update()
     {

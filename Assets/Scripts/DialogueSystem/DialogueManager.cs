@@ -21,7 +21,8 @@ public enum EventForClear
 public enum State
 {
   QuestNotCompleted,
-  QuestCompleted
+  QuestCompleted,
+  Stage1
 };
 
 [System.Serializable]
@@ -74,6 +75,11 @@ public class DialogueManager : MonoBehaviour
   {
     actualState = state;
     ChooseDialogue(EventForTriggering.OnStart);
+  }
+
+  public State GetState()
+  {
+    return actualState;
   }
 
   public void ChooseDialogue(EventForTriggering eventForTriggering)

@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     [Space(5)]
     [Header("Dog Stuff")]
     public DogBark dogBarkPrefab;
+    public AudioSource audioSource;
     public float dogBarkWindUpTime = 0.33f;
     public float dogBarkRecoveryTime = 0.7f;
     public float dogBarkSize = 5;
@@ -152,7 +153,11 @@ public class PlayerController : MonoBehaviour
             if (isHoldingItem == false)
             {
                 float pickUpDistance = 2f;
+//<<<<<<< HEAD
                 bool hashit = Physics.Raycast(mouthPosition.position- mouthPosition.forward, mouthPosition.forward, out RaycastHit hit, grabDistance);
+//=======
+//                bool hashit = Physics.Raycast(mouthPosition.position, -mouthPosition.up, out RaycastHit hit, grabDistance);
+//>>>>>>> dev
                 if (hashit)
                 {
                     if (hit.transform.TryGetComponent(out pickedObjectRef))
@@ -238,12 +243,13 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Bark()
     {
+    //Debug.Log("barking");
         coroutinePause = true;
         isBarking = true;
         
         dogBarkPrefab.GetComponent<SphereCollider>().radius = dogBarkSize;
         dogBarkPrefab.GetComponent<DestroySelf>().time = dogBarkDuration;
-
+        dogBarkPrefab.GetComponent<DogBark>().bark = audioSource;
         yield return new WaitForSeconds(dogBarkWindUpTime);
 
         Instantiate(dogBarkPrefab, transform.position, transform.rotation);

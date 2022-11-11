@@ -19,6 +19,6 @@ public class LookTo : MonoBehaviour
       //delta.y = 0;
       //Quaternion q = new Quaternion();
       //q.SetLookRotation(delta, new Vector3(0, 1, 0));
-      transform.rotation = lookToObject.transform.rotation;
+      //transform.rotation = lookToObject.transform.rotation;
     }
 }

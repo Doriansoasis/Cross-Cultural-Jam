@@ -20,10 +20,10 @@ public class NearDialogue : MonoBehaviour
 
   void OnTriggerEnter(Collider col)
   {
-    Debug.Log(col.gameObject.name);
+    //Debug.Log(col.gameObject.name);
     if (col.gameObject.name == "PlayerDog")
     {
-      Debug.Log("near");
+      //Debug.Log("near");
       dialogues.ChooseDialogue(EventForTriggering.IsNear);
     }
   }

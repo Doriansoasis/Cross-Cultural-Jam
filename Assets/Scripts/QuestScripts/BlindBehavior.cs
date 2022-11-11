@@ -20,6 +20,8 @@ public class BlindBehavior : MonoBehaviour
     
     public float speed = 2;
     
+    public GameObject spawnedMeat;
+    
     private bool isRotating = false;
     private float angleToDestination;
     void Start()
@@ -30,11 +32,11 @@ public class BlindBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dog.isBarking && !noticedBarking)
-            HearBark();
+        //if (dog.isBarking && !noticedBarking)
+        //    HearBark();
 
-        else if (!dog.isBarking && noticedBarking)
-            noticedBarking = false;
+        //else if (!dog.isBarking && noticedBarking)
+        //    noticedBarking = false;
         
         if (isRotating && hasDestination)
             Rotate();
@@ -48,6 +50,7 @@ public class BlindBehavior : MonoBehaviour
             destination = HousePosition.position;
             SetRotation();
             pausemenu.FinishQuest(3);
+            Instantiate(spawnedMeat, new Vector3(transform.position.x, transform.position.y, transform.position.z) + transform.forward*2, transform.rotation);
         }
     }
 
@@ -71,14 +74,14 @@ public class BlindBehavior : MonoBehaviour
         }
     }
 
-    void HearBark()
+    public void OnBark()
     {
         if (Vector3.Distance(transform.position, dog.transform.position) <= hearingDistance)
         {
             destination = dog.transform.position;
             SetRotation();
             hasDestination = true;
-            noticedBarking = true;
+            //noticedBarking = true;
         }
     }
 

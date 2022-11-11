@@ -86,7 +86,7 @@ public class Dialogue : MonoBehaviour
 
   public bool HasFinished()
   {
-    return actualSentence == toSay.Count - 1 && actualSentence == toSay.Count - 1;
+    return actualSentence == toSay.Count - 1 && actualLetter == toSay[actualSentence].Length;
   }
   public bool WaitingForClear()
   {

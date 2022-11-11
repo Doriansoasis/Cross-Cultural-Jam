@@ -59,6 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c98aaaa42cb2b534b9f1ba541922c997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bark: {fileID: 0}
+  barkSound: {fileID: 8300000, guid: 2f7143e398986df4c8a24f282f8e7dd4, type: 3}
 --- !u!114 &7147383143582418985
 MonoBehaviour:
   m_ObjectHideFlags: 0

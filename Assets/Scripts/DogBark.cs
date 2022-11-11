@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DogBark : MonoBehaviour
 {
+    public AudioSource bark;
+
+  public AudioClip barkSound;
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(1, 0, 0, 0.5f); //Transparent Red
@@ -14,6 +17,14 @@ public class DogBark : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //This will side a signal to the NPC once we have them
+      other.gameObject.GetComponent<HomelessBehavior>()?.OnBark();
+          //Debug.Log(other.gameObject.name);
+          //This will side a signal to the NPC once we have them
     }
+
+
+  void Start()
+  {
+    bark.PlayOneShot(barkSound);
+  }
 }

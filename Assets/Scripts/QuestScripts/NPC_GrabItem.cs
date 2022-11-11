@@ -48,7 +48,7 @@ public class NPC_GrabItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isHoldingItem);
+        //Debug.Log(isHoldingItem);
 
         //Debug.Log(keyitems[0].transform.position);
 
