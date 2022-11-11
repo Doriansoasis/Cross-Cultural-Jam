@@ -76,7 +76,7 @@ public class HomelessBehavior : MonoBehaviour
 
   void Sleep()
   {
-    transform.rotation = Quaternion.Euler(90, 0, 0);
+    transform.rotation = Quaternion.Euler(-90, 0, 0);
     pausemenu.FinishQuest(2);
     questOver = true;
   }
