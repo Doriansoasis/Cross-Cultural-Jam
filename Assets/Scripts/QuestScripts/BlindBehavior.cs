@@ -20,6 +20,8 @@ public class BlindBehavior : MonoBehaviour
     
     public float speed = 2;
     
+    public GameObject spawnedMeat;
+    
     private bool isRotating = false;
     private float angleToDestination;
     void Start()
@@ -48,6 +50,7 @@ public class BlindBehavior : MonoBehaviour
             destination = HousePosition.position;
             SetRotation();
             pausemenu.FinishQuest(3);
+            Instantiate(spawnedMeat, new Vector3(transform.position.x, transform.position.y, transform.position.z) + transform.forward*2, transform.rotation);
         }
     }
 
